@@ -18,12 +18,12 @@ jobs:
         run: |
           docker run -d --name test-container -p 8000:8000 devops-lab-service
           sleep 10
-          curl http://localhost:8000 || exit 1
+          curl -f http://localhost:8000 || (docker stop test-container && docker rm test-container && exit 1)
           docker stop test-container
           docker rm test-container
 
       - name: Deploy to Server
-        uses: appleyboy/scp-action@master
+        uses: appleyboy/scp-action@v.0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -32,8 +32,8 @@ jobs:
           target: "/home/${{ secrets.SSH_USER }}/devops-lab-service"
           overwrite: true
 
-      - name: Restart SErvice on Server
-        uses: appleboy/ssh-action@master
+      - name: Restart Service on Server
+        uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
