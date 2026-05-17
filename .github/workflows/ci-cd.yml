@@ -43,4 +43,4 @@ jobs:
           script: |
             cd /home/${{ secrets.SSH_USER }}/devops-lab-service
             docker-compose down
-            docker-compose up -d --build
+            docker-compose up -d --buid
