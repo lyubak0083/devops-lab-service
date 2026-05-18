@@ -5,40 +5,15 @@ on:
     branches: [ master ]
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@
-      - name: Build Dock image
-        run: docker build -t devops-lab-service .
-
-      - name: Test Docker image
-        run: |
-          docker rm -f test-container || true
-          docker run -d --name test-container -p 8000:8000 devops-lab-service
-          sleep 10
-          curl -f http://localhost:8000 || (docker stop test-container && docker rm test-container && exit 1)
-          docker stop test-container
-          docker rm test-container
-
-      - name: Deploy to Server
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.Sname: CI/CD Pipeline
-
-on:
-  push:
-    branches: [ master ]
-
-jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Build Docker image
         run: docker build -t devops-lab-service .
+
       - name: Test Docker image
         run: |
           docker run -d --name test-container -p 8000:8000 devops-lab-service
